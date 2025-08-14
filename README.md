@@ -3,8 +3,6 @@
 
 *Finite difference solvers and neural network surrogates for nonlinear PDEs, with applications to predictive modeling and simulation speedup.*
 
-![Burgers’ Equation space–time heatmap](examples/burgers_demo.png)
-
 > **Status:** In active development — core APIs scaffolded, implementations underway. Updated: 2025-08-14
 
 ## Abstract
