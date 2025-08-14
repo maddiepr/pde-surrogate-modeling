@@ -3,7 +3,9 @@
 
 *Finite difference solvers and neural network surrogates for nonlinear PDEs, with applications to predictive modeling and simulation speedup.*
 
-> **Status:** Minimal slice working - 'set_seed' implemented with test; Lax-Friedrichs periodic Burgers solver implemented with smoke tests; CI passing. Updated: 2025-08-14
+![Burgers’ Equation space–time heatmap](examples/burgers_demo.png)
+
+> **Status:** In active development — core APIs scaffolded, implementations underway. Updated: 2025-08-14
 
 ## Abstract
 
@@ -52,8 +54,12 @@ surrogate-pde/
 │   │   ├── visualization.py                # Plotting utilities
 │   ├── __init__.py
 │ ├── utils/                                # Common utilities (I/O, plotting, etc.)
-├── test/                                   # Unit and integration tests
+├── tests/                                  # Unit and integration tests
 │   ├── test_utils.py
+├── examples/                               # Simply examples for visualization
+│   ├── run_burgers_demo.py
+│   ├── burgers_demo.png
+│   ├── burgers_snapshots.png
 ├── requirements.txt                        # Python dependencies
 ├── CMakeLists.txt                          # Build configuration for C++ code
 └── README.md

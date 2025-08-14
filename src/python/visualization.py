@@ -58,7 +58,31 @@ def plot_solution_heatmap(
     --------
     >>> plot_solution_heatmap(U, x, t, title="Burgers' Equation Solution")
     """
-    pass
+    if U.ndim != 2:
+        raise ValueError(f"U must be 2D (nt + 1, nx), got shape {U.shape}")
+    
+    # pcolormesh expects 2D coordinate grids; we use imshow with extent for simplicity
+    fig, ax = plt.subplots(figsize=(7.5, 3.8))
+    im = ax.imshow(
+        U,
+        aspect="auto",
+        origin="lower",
+        extent=[x[0], x[-1] + (x[1] - x[0]), t[0], t[-1]],
+        cmap=cmap,
+        interpolation="nearest",
+    )
+    ax.set_xlabel("x")
+    ax.set_ylabel("t")
+    ax.set_title(title)
+    fig.colorbar(im, ax=ax, label="u(x,t)")
+    fig.tight_layout()
+
+    if save_path:
+        fig.savefig(save_path, dpi=150)
+        plt.close(fig)
+    else:
+        plt.show()
+    
 
 
 def plot_comparison_snapshots(
