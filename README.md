@@ -53,7 +53,7 @@ surrogate-pde/
 │   ├── __init__.py
 │ ├── utils/                                # Common utilities (I/O, plotting, etc.)
 ├── test/                                   # Unit and integration tests
-│   ├── test_placeholder.py
+│   ├── test_utils.py
 ├── requirements.txt                        # Python dependencies
 ├── CMakeLists.txt                          # Build configuration for C++ code
 └── README.md

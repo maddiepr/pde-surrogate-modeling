@@ -44,7 +44,19 @@ def set_seed(seed: int) -> None:
     --------
     >>> set_seed(42)
     """
-    pass
+    # Python built-in RNG
+    random.seed(seed)
+
+    # NumPy RND
+    np.random.seed(seed)
+
+    # Pytorch CPU & GPU RNGs
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    
+    # Ensure deterministic behavior in cuDNN backend
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 
 def save_checkpoint(model: torch.nn.Module, path: str) -> None:
