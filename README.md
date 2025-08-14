@@ -1,6 +1,9 @@
 # Surrogate Modeling on Nonlinear PDEs
+[![CI](https://github.com/maddiepr/pde-surrogate-modeling/actions/workflows/ci.yml/badge.svg)](https://github.com/maddiepr/pde-surrogate-modeling/actions/workflows/ci.yml)
 
 *Finite difference solvers and neural network surrogates for nonlinear PDEs, with applications to predictive modeling and simulation speedup.*
+
+> **Status:** Scaffolding phase - core APIs defined; implementation in progress. Last updated: 2025-08-14.
 
 ## Abstract
 
@@ -33,9 +36,25 @@ surrogate-pde/
 ├── notebooks/         # Jupyter notebooks for exploration and visualization
 ├── src/
 │ ├── cpp/             # High-performance C++ solver implementations
+│   │   ├── finite_difference_solver.cpp    # C++ implementation of PDE solver
+│   │   ├── utils.cpp                       # Helper functions for C++ solver
+│   │   └── CMakeLists.txt                  # CMake build config
 │ ├── python/          # Python-based solvers and ML models
+│   │   ├── finite_difference_solver.py     # Python PDE solver
+│   │   ├── data_generation.py              # Generates datasets from solver runs
+│   │   ├── surrogate_model.py              # PyTorch neural network model
+│   │   ├── training.py                     # Training loop for surrogate model
+│   │   ├── evaluation.py                   # Accuracy, generalization, speed tests
+│   │   ├── visualization.py                # Plotting utilities
+│   │   ├── utils.py                         # Common helpers (I/O, param handling)
+│   ├── __init__.py
 │ ├── utils/           # Common utilities (I/O, plotting, etc.)
 ├── tests/             # Unit and integration tests
+│   ├── test_solver.py
+│   ├── test_data_generation.py
+│   ├── test_surrogate_model.py
+│   ├── test_training.py
+│   └── test_evaluation.py
 ├── requirements.txt   # Python dependencies
 ├── CMakeLists.txt     # Build configuration for C++ code
 └── README.md
