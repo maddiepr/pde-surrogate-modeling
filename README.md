@@ -3,7 +3,7 @@
 
 *Finite difference solvers and neural network surrogates for nonlinear PDEs, with applications to predictive modeling and simulation speedup.*
 
-> **Status:** In active development — core APIs scaffolded, implementations underway. Updated: 2025-08-14
+> **Status:** Minimal slice working - 'set_seed' implemented with test; Lax-Friedrichs periodic Burgers solver implemented with smoke tests; CI passing. Updated: 2025-08-14
 
 ## Abstract
 

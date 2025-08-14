@@ -46,9 +46,10 @@ def solve_burgers(
     """
     Solve 1D viscous Burgers' equation on [0, L] over time [0, T] using a finite-difference method.
 
-    PDE:
+    PDE
+    ---
     u_t + (f(u))_x = nu * u_xx
-    with f(u) = 0.5 * u^2 for the standard Burgers' flux.
+        where f(u) = 0.5 * u^2 (standard Burgers' flux).
     
     Parameters
     ----------
@@ -102,4 +103,63 @@ def solve_burgers(
     ...     scheme="lax_friedrichs", bc="periodic"
     ... )
     """
-    raise NotImplementedError("Explicit solver implementation pending.")
+    # --- 1) Validate and scope current minimal implementation --- 
+    if scheme != "lax_friedrichs":
+        raise NotImplementedError("Only 'lax_friedrichs' is implemented in the minimal slice.")
+    if bc != "periodic":
+        raise NotImplementedError("Only perdiodic BCs are implemented in the minimal slice.")
+    if flux != "standard":
+        raise NotImplementedError("Only standard Burgers' flux f(u)=0.5*u^2 is implemented.")
+    
+    if nx < 3:
+        raise ValueError("nx must be >= 3")
+    if nt < 1:
+        raise ValueError("nt must be >=1")
+    if L <= 0 or T <= 0:
+        raise ValueError("L and T must be positive")
+    if nu < 0:
+        raise ValueError("nu must be non-negative")
+    
+    # --- 2) Grid and step sizes ---
+    # endpoint=False -> Last point is L - dx; periodic wrap maps to x[0]
+    x = np.linspace(0.0, L, nx, endpoint=False)
+    t = np.linspace(0.0, T, nt + 1)
+    dx = L / nx
+    dt = T / nt
+
+    # --- 3) Allocate solution and set ICs U[0] ---
+    if callable(u0):
+        U0 = np.asarray(u0(x), dtype=float)
+    else:
+        U0 = np.asarray(u0, dtype=float)
+    if U0.shape != (nx, ):
+        raise ValueError(f"uo must have shape (nx, ), got {U0.shape}")
+    
+    U = np.empty((nt + 1, nx), dtype=float)
+    U[0] = U0
+
+    # --- 4) Periodic neightbors via roll ---
+    def roll_plus(v):           # v_{i+1} with wrap
+        return np.roll(v, -1)
+    
+    def roll_minus(v):          #v_{i-1} with wrap
+        return np.roll(v, 1)
+    
+    # --- 5. Explicit time stepping: LF convection + centered diffusion ---
+    for k in range(nt):
+        u = U[k]
+        f = 0.5 * u**2     # Burgers' flux
+
+        # Lax-Friedrichs dissipative avg: (u_{i+1} + u_{i-1}) / 2 
+        u_avg = 0.5 * (roll_plus(u) + roll_minus(u))
+
+        # Centered flux gradient: (f_i - f_{i-1}) / dx
+        conv = (f - roll_minus(f)) / dx
+
+        # Diffusive Laplacian: (u_{i+1} - 2u_i + u_{i-1})/dx^2
+        lap = (roll_plus(u) - 2.0 * u + roll_minus(u)) / dx**2
+
+        # Update: u^{n+1}_i = avg - dt * conv + nu * dt * lap
+        U[k+1] = u_avg - dt * conv + nu * dt * lap
+    
+    return x, t, U
